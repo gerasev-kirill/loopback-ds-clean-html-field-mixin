@@ -2,25 +2,10 @@ cheerio = require('cheerio')
 
 
 
-
-cleanHtml = (rawHtml, rules)->
-    ###
-        rules:
-        {
-            a: {
-                removeAttr: ['rel'],
-                replaceAttr: {'uic-rel': ''}
-            }
-            *: {
-                removeAttr: ['style']
-            }
-        }
-    ###
-    if !rawHtml or !rules
-        return rawHtml
-    if typeof(rawHtml) != 'string'
-        return rawHtml
-    $ = cheerio.load(rawHtml, {
+_cleanHtml = (raw_html, rules)->
+    if typeof(raw_html) != 'string'
+        return raw_html
+    $ = cheerio.load(raw_html, {
         decodeEntities:false  # иначе будет мусор из &#x41F;&#x440;&#x438;
     })
 
@@ -39,6 +24,29 @@ cleanHtml = (rawHtml, rules)->
             elements.find('.'+className).removeClass(className)
                 .removeClass(newClassName).addClass(newClassName)
     $.html()
+
+
+cleanHtml = (rawHtml, rules)->
+    ###
+        rules:
+        {
+            a: {
+                removeAttr: ['rel'],
+                replaceAttr: {'uic-rel': ''}
+            }
+            *: {
+                removeAttr: ['style']
+            }
+        }
+    ###
+    if !rawHtml or !rules
+        return rawHtml
+    if typeof(rawHtml) == 'object'
+        for k,v of rawHtml when k!='id'
+            rawHtml[k] = _cleanHtml(v, rules)
+        return rawHtml
+
+    _cleanHtml(rawHtml, rules)
 
 
 

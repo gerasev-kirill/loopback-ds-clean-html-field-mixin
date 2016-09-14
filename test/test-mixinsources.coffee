@@ -15,10 +15,6 @@ describe 'api allowed', ->
     lt.beforeEach.withApp app
 
 
-    #lt.describe.whenCalledRemotely 'GET', '/api/People', (done)->
-    #    lt.it.shouldBeAllowed()
-
-
     describe 'clean html', ()->
         lt.beforeEach.givenModel('Person', {name: 'Tom', bio: 'empty'}, 'People')
 
@@ -77,5 +73,28 @@ describe 'api allowed', ->
                 .end (err, res)->
                     expect(res.body.bio).to.equal(
                         '<div class="btn">Danger</div><div class="btn btn-default">Safe<span class="btn new-class"></span></div>'
+                    )
+                    done()
+
+        it 'should remove class in non-empty complex html field by class selector', (done)->
+            @post('/api/People')
+                .send({
+                    name: 'Tom',
+                    jsonField: {
+                        en: '<div class="btn btn-danger">Danger</div><div class="btn btn-default">Safe<span class="btn replace-me"></span></div>',
+                        ru: '<p class="btn btn-danger">Удали мой класс</p>'
+                        id: 'some-id'
+                    }
+                })
+                .expect(200)
+                .end (err, res)->
+                    expect(res.body.jsonField.en).to.equal(
+                        '<div class="btn">Danger</div><div class="btn btn-default">Safe<span class="btn new-class"></span></div>'
+                    )
+                    expect(res.body.jsonField.ru).to.equal(
+                        '<p class="btn">Удали мой класс</p>'
+                    )
+                    expect(res.body.jsonField.id).to.equal(
+                        'some-id'
                     )
                     done()

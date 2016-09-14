@@ -11,6 +11,9 @@
     },
     "bio": {
       "type": "string"
+    },
+    "jsonField":{
+      "type": "object"
     }
   },
   "validations": [],
@@ -18,7 +21,7 @@
   "methods": {},
   "mixins": {
     "CleanHtmlField": {
-      "fields": ["bio"],
+      "fields": ["bio", "jsonField"],
       "options": {
           "a": {
               "removeAttr": ["rel"]

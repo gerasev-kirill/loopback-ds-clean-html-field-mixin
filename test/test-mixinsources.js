@@ -53,12 +53,27 @@
           return done();
         });
       });
-      return it('should remove class in non-empty html field by class selector', function(done) {
+      it('should remove class in non-empty html field by class selector', function(done) {
         return this.post('/api/People').send({
           name: 'Tom',
           bio: '<div class="btn btn-danger">Danger</div><div class="btn btn-default">Safe<span class="btn replace-me"></span></div>'
         }).expect(200).end(function(err, res) {
           expect(res.body.bio).to.equal('<div class="btn">Danger</div><div class="btn btn-default">Safe<span class="btn new-class"></span></div>');
+          return done();
+        });
+      });
+      return it('should remove class in non-empty complex html field by class selector', function(done) {
+        return this.post('/api/People').send({
+          name: 'Tom',
+          jsonField: {
+            en: '<div class="btn btn-danger">Danger</div><div class="btn btn-default">Safe<span class="btn replace-me"></span></div>',
+            ru: '<p class="btn btn-danger">Удали мой класс</p>',
+            id: 'some-id'
+          }
+        }).expect(200).end(function(err, res) {
+          expect(res.body.jsonField.en).to.equal('<div class="btn">Danger</div><div class="btn btn-default">Safe<span class="btn new-class"></span></div>');
+          expect(res.body.jsonField.ru).to.equal('<p class="btn">Удали мой класс</p>');
+          expect(res.body.jsonField.id).to.equal('some-id');
           return done();
         });
       });
