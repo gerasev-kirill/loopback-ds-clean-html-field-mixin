@@ -24,7 +24,8 @@
       "fields": ["bio", "jsonField"],
       "options": {
           "a": {
-              "removeAttr": ["rel"]
+              "removeAttr": ["rel"],
+              "replaceAttr": {"my-attr": "my-val"}
           },
           "*":{
               "removeAttr": ["style"],

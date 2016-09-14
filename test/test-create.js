@@ -11,19 +11,15 @@
 
   app = require('./fixtures/simple-app/server/server.js');
 
-  describe('api allowed', function() {
+  describe('create object::', function() {
     lt.beforeEach.withApp(app);
     return describe('clean html', function() {
-      lt.beforeEach.givenModel('Person', {
-        name: 'Tom',
-        bio: 'empty'
-      }, 'People');
       it('should clean non-empty html field', function(done) {
         return this.post('/api/People').send({
           name: 'Tom',
-          bio: '<p style="color:red;">Hello!!</p><div><a href="google.com" rel="bla-bla">google</a></div>'
+          bio: '<p style="color:red;">Hello!!</p><div><a href="google.com" rel="bla-bla" my-attr="invalid-val">google</a></div>'
         }).expect(200).end(function(err, res) {
-          expect(res.body.bio).to.equal('<p>Hello!!</p><div><a href="google.com">google</a></div>');
+          expect(res.body.bio).to.equal('<p>Hello!!</p><div><a href="google.com" my-attr="my-val">google</a></div>');
           return done();
         });
       });

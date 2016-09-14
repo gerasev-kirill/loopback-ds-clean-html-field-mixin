@@ -68,7 +68,7 @@ module.exports = (Model, options)->
             else if ctx.data.hasOwnProperty(field)
                 rawHtml = ctx.data[field]
                 if rawHtml
-                    ctx.data[field] = cleanHtml(rawHtml)
+                    ctx.data[field] = cleanHtml(rawHtml, options.options)
 
         # loopback может несколько раз запускать один и тот же хук.
         # обрезаем такое поведение до 1 выполнения очистки html.
