@@ -1,0 +1,52 @@
+{
+  "name": "loopback-ds-clean-html-field-mixin",
+  "description": "A mixin to clean(sanitize) loopback Model html-properties.",
+  "version": "0.1.0",
+  "main": "./lib/index.js",
+  "author": "Gerasev Kirill <gerasev.kirill@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "keywords": [
+    "loopback",
+    "strongloop",
+    "mixin"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": ""
+  },
+  "homepage": "",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "lint": "true",
+    "test": "nyc mocha -R spec --timeout 10000 test",
+    "test:watch": "npm run test -- -w",
+    "pretest": "npm run lint",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "outdated": "npm outdated --depth=0"
+  },
+  "dependencies": {
+    "cheerio": "^0.22.0",
+    "depd": "^1.1.0"
+  },
+  "peerDependencies": {
+    "loopback-datasource-juggler": ">=2.18.1"
+  },
+  "devDependencies": {
+    "bluebird": "latest",
+    "chai": "latest",
+    "coveralls": "^2.11.4",
+    "jscs": "latest",
+    "jshint": "latest",
+    "loopback": ">=2.22.0",
+    "loopback-boot": ">=2.8.0",
+    "loopback-component-explorer": "2.1.1",
+    "loopback-testing": "1.2.0",
+    "mocha": "latest",
+    "nyc": "latest"
+  }
+}
