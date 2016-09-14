@@ -1,0 +1,43 @@
+{
+  "name": "Cat",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "info": {
+      "type": "string",
+      "_CleanHtmlField": true
+    },
+    "weight":{
+      "type": "number",
+      "_CleanHtmlField": true
+    },
+    "height":{
+      "type": "number",
+      "_CleanHtmlField": {
+          "*":{
+              "removeAttr": ["will not remove ever"]
+          }
+      }
+    },
+    "jsonField":{
+      "type": "object",
+      "_CleanHtmlField": {
+          "*": {
+              "removeAttr": ["style"]
+          }
+      }
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "methods": {},
+  "mixins": {
+    "CleanHtmlField": {}
+  }
+}

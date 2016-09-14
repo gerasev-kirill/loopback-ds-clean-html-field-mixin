@@ -1,3 +1,5 @@
+# out: clean-html-field.js
+
 cheerio = require('cheerio')
 
 
@@ -5,6 +7,7 @@ cheerio = require('cheerio')
 _cleanHtml = (raw_html, rules)->
     if typeof(raw_html) != 'string'
         return raw_html
+
     $ = cheerio.load(raw_html, {
         decodeEntities:false  # иначе будет мусор из &#x41F;&#x440;&#x438;
     })
@@ -50,6 +53,9 @@ cleanHtml = (rawHtml, rules)->
 
 
 
+
+
+
 module.exports = (Model, options)->
 
     Model.observe 'before save', (ctx, next)->
@@ -57,18 +63,30 @@ module.exports = (Model, options)->
         if ctx.hookState.$CLEAN_HTML_FIELD
             return next()
 
-        for field in options.fields
+
+        processField = (field, fieldOptions)->
             if ctx.isNewInstance
-                rawHtml = ctx.instance[field]
-                if rawHtml
+                if ctx.instance[field]
                     ctx.instance.setAttribute(
                         field,
-                        cleanHtml(rawHtml, options.options)
+                        cleanHtml(
+                            ctx.instance[field],
+                            fieldOptions or options.options
+                        )
                     )
             else if ctx.data.hasOwnProperty(field)
-                rawHtml = ctx.data[field]
-                if rawHtml
-                    ctx.data[field] = cleanHtml(rawHtml, options.options)
+                if ctx.data[field]
+                    ctx.data[field] = cleanHtml(ctx.data[field], fieldOptions or options.options)
+
+
+        for field in options.fields or []
+            processField(field)
+
+        for propertyName, params of Model.definition.properties when params._CleanHtmlField
+            if typeof(params._CleanHtmlField) == 'object'
+                processField(propertyName, params._CleanHtmlField)
+            else
+                processField(propertyName)
 
         # loopback может несколько раз запускать один и тот же хук.
         # обрезаем такое поведение до 1 выполнения очистки html.

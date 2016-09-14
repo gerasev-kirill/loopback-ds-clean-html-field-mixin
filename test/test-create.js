@@ -58,7 +58,7 @@
           return done();
         });
       });
-      return it('should remove class in non-empty complex html field by class selector', function(done) {
+      it('should remove class in non-empty complex html field by class selector', function(done) {
         return this.post('/api/People').send({
           name: 'Tom',
           jsonField: {
@@ -69,6 +69,25 @@
         }).expect(200).end(function(err, res) {
           expect(res.body.jsonField.en).to.equal('<div class="btn">Danger</div><div class="btn btn-default">Safe<span class="btn new-class"></span></div>');
           expect(res.body.jsonField.ru).to.equal('<p class="btn">Удали мой класс</p>');
+          expect(res.body.jsonField.id).to.equal('some-id');
+          return done();
+        });
+      });
+      return it('should skip 2 of 3 fields in model Cat [info, weight]', function(done) {
+        return this.post('/api/Cats').send({
+          name: 'Tom',
+          info: '<div class="btn btn-danger">Danger</div><div class="btn btn-default">Safe<span class="btn replace-me"></span></div>',
+          weight: 10,
+          height: 20,
+          jsonField: {
+            ru: '<p style="color:red;">Удали мой стиль</p>',
+            id: 'some-id'
+          }
+        }).expect(200).end(function(err, res) {
+          expect(res.body.weight).to.equal(10);
+          expect(res.body.height).to.equal(20);
+          expect(res.body.info).to.equal('<div class="btn btn-danger">Danger</div><div class="btn btn-default">Safe<span class="btn replace-me"></span></div>');
+          expect(res.body.jsonField.ru).to.equal('<p>Удали мой стиль</p>');
           expect(res.body.jsonField.id).to.equal('some-id');
           return done();
         });

@@ -10,5 +10,9 @@
   "Person": {
     "dataSource": "db",
     "public": true
+  },
+  "Cat": {
+    "dataSource": "db",
+    "public": true
   }
 }

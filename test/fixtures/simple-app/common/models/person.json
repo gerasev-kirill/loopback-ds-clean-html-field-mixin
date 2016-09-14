@@ -13,7 +13,8 @@
       "type": "string"
     },
     "jsonField":{
-      "type": "object"
+      "type": "object",
+      "_CleanHtmlField": true
     }
   },
   "validations": [],
@@ -21,7 +22,7 @@
   "methods": {},
   "mixins": {
     "CleanHtmlField": {
-      "fields": ["bio", "jsonField"],
+      "fields": ["bio"],
       "options": {
           "a": {
               "removeAttr": ["rel"],

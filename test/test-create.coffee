@@ -97,3 +97,31 @@ describe 'create object::', ->
                         'some-id'
                     )
                     done()
+
+
+        it 'should skip 2 of 3 fields in model Cat [info, weight]', (done)->
+            @post('/api/Cats')
+                .send({
+                    name: 'Tom',
+                    info: '<div class="btn btn-danger">Danger</div><div class="btn btn-default">Safe<span class="btn replace-me"></span></div>',
+                    weight: 10,
+                    height: 20,
+                    jsonField:{
+                        ru: '<p style="color:red;">Удали мой стиль</p>'
+                        id: 'some-id'
+                    }
+                })
+                .expect(200)
+                .end (err, res)->
+                    expect(res.body.weight).to.equal(10)
+                    expect(res.body.height).to.equal(20)
+                    expect(res.body.info).to.equal(
+                        '<div class="btn btn-danger">Danger</div><div class="btn btn-default">Safe<span class="btn replace-me"></span></div>'
+                    )
+                    expect(res.body.jsonField.ru).to.equal(
+                        '<p>Удали мой стиль</p>'
+                    )
+                    expect(res.body.jsonField.id).to.equal(
+                        'some-id'
+                    )
+                    done()

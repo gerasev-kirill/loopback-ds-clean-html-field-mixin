@@ -113,3 +113,33 @@ describe 'update object::', ->
                         'some-id'
                     )
                     done()
+
+
+
+
+        lt.beforeEach.givenModel('Cat', {name: '', jsonField: {}}, 'cat')
+        it 'should skip 2 of 3 fields in model Cat [info, weight]', (done)->
+            cat = @cat
+            @put("/api/Cats/#{cat.id}")
+                .send({
+                    name: 'Tom',
+                    info: '<div class="btn btn-danger">Danger</div><div class="btn btn-default">Safe<span class="btn replace-me"></span></div>',
+                    weight: 10,
+                    jsonField:{
+                        ru: '<p style="color:red;">Удали мой стиль</p>'
+                        id: 'some-id'
+                    }
+                })
+                .expect(200)
+                .end (err, res)->
+                    expect(res.body.weight).to.equal(10)
+                    expect(res.body.info).to.equal(
+                        '<div class="btn btn-danger">Danger</div><div class="btn btn-default">Safe<span class="btn replace-me"></span></div>'
+                    )
+                    expect(res.body.jsonField.ru).to.equal(
+                        '<p>Удали мой стиль</p>'
+                    )
+                    expect(res.body.jsonField.id).to.equal(
+                        'some-id'
+                    )
+                    done()
