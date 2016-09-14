@@ -1,0 +1,38 @@
+{
+  "name": "Person",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "bio": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "methods": {},
+  "mixins": {
+    "CleanHtmlField": {
+      "fields": ["bio"],
+      "options": {
+          "a": {
+              "removeAttr": ["rel"]
+          },
+          "*":{
+              "removeAttr": ["style"],
+              "removeClass": ["btn-danger", "text-danger"]
+          },
+          "my-tag": "remove",
+          ".btn":{
+              "removeClass": ["btn-danger"],
+              "replaceClass": {"replace-me": "new-class"}
+          }
+      }
+    }
+  }
+}
