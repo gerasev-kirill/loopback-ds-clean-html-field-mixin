@@ -1,7 +1,7 @@
 {
   "name": "loopback-ds-clean-html-field-mixin",
   "description": "Mixin for loopback.js that makes it possible to clean model properties as html from unsafe attributes, invalid classes or other(i.e. sanitizer)",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "main": "./lib/index.js",
   "author": "Gerasev Kirill <gerasev.kirill@gmail.com>",
   "repository": {

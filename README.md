@@ -41,6 +41,29 @@ Add the `mixins` property to your `server/model-config.json` like the following:
 }
 ```
 
+SERVER.JS
+=============
+
+In your `server/server.js` file add the following line before the
+`boot(app, __dirname);` line.
+
+```
+...
+var app = module.exports = loopback();
+...
+// Add CleanHtmlField Mixin to loopback
+require('loopback-ds-clean-html-field-mixin')(app);
+
+boot(app, __dirname, function(err) {
+  'use strict';
+  if (err) throw err;
+
+  // start the server if `$ node server.js`
+  if (require.main === module)
+    app.start();
+});
+```
+
 
 CONFIG
 =============
